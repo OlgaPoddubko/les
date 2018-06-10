@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router'; // !!
+import { withRouter } from 'react-router';
 import { toggleTodo } from '../actions';
 import TodoList from './TodoList';
 
@@ -17,16 +17,18 @@ const getVisibleTodos = (todos, filter ) => {
 };
 
 const mapStateToProps = (state, { params }) => ({
-  todos: getVisibleTodos( state.todos, params.filter || 'all'), // !!
+  todos: getVisibleTodos( state.todos, params.filter || 'all'),
 });
 
+/*
 const mapDispatchToProps = (dispatch) => ({
   onTodoClick(id) {
         dispatch(toggleTodo(id));
       },
 });
+*/
 
-const VisibleTodoList = withRouter(connect( // !!
+const VisibleTodoList = withRouter(connect(
   mapStateToProps,
-  mapDispatchToProps
+  { onTodoClick: toggleTodo } // !! maps correcponding props to the action creators function
 )(TodoList));
