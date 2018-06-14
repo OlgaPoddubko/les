@@ -1,7 +1,6 @@
 # les
 
-API that encapsulates the asynchronous logic in the asynchronous action creator
+applyMiddleware from 'redux';
 
-// configureStore.js
-addLoggingToDispatch(store);
-addPromiseSupportToDispatch(store);
+npm install --save redux-promise
+npm install --save redux-logger
