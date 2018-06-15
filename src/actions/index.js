@@ -2,27 +2,32 @@ import { v4 } from 'node-uui';
 import { getIsFetching } from '../reducers';
 import * as api from '../api';
 
-const requestTodos = (filter) => ({
-  type: 'REQUEST_TODOS',
-  filter,
-})
-
-const receiveTodos = (filter, response) => ({
-  type: 'RECEIVE_TODOS',
-  filter,
-  response,
-});
-
 export const fetchTodos = (filter) => (dispatch) => {
   if (getIsFetching(getState(), filter)) {
     return Promise.resolve();
   }
 
-  dispatch(requestTodos(filter));
-
-  return api.fetchTodos(filter).then(response => {
-    dispatch(receiveTodos(filter, response));
+  dispatch({
+    type: 'FETCH_TODOS_REQUEST',
+    filter,
   });
+
+  return api.fetchTodos(filter).then(
+    response => {
+      dispatch({
+        type: 'FETCH_TODOS_SUCCESS',
+        filter,
+        response,
+      });
+    },
+    error => { // вместо catch, чтоб обрабатывать только нужную ошибку
+      dispatch({
+        type: 'FETCH_TODOS_FAILER',
+        filter,
+        message: error.message || 'Something went wrong.'
+      });
+    }
+  );
 };
 
 export const addTodo = (text) => ({
